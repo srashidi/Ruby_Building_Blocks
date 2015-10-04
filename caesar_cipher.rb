@@ -6,16 +6,16 @@ def caesar_cipher(str, num=0)
 	@str = str
 	@num = num
 
+	def shift_action(arr, char)
+		newIndex = (arr.index(char) + @num%arr.length)%arr.length
+		@str[@i] = arr[newIndex]
+	end
+
 =begin
 I refactored the shift method for each character.
 It can now take any set of letters, numbers, symbols, etc. from an array.
 All I need to do is enter the method, specifying the array.
 =end
-
-	def shift_action(arr, char)
-		newIndex = (arr.index(char) + @num%arr.length)%arr.length
-		@str[@i] = arr[newIndex]
-	end
 
 	str.each_char do |char|
 		if char =~ /[A-Z]/
