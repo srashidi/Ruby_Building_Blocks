@@ -7,10 +7,12 @@ def caesar_cipher(str, num=0)
 	i,j,k=0,0,0
 	strArray = str.split(//)
 	strArray.each do |char|
-		if char =~ /A-Z/
-			newIndex = (uppers.index(char) + numAlpha)%26
-			strArray[i] = uppers[newIndex]
-			i += 1
+		if char =~ /[A-Z]/
+			if char = char.upcase
+				newIndex = (uppers.index(char) + numAlpha)%26
+				strArray[i] = uppers[newIndex]
+				i += 1
+			end
 		end
 	end
 	strArray
