@@ -1,5 +1,4 @@
 def stock_picker(arr)
-	arrIdeal = []
 	if arr.index(arr.min) < arr.index(arr.max)
 		arrIdeal = [arr.index(arr.min),arr.index(arr.max)]
 	end
