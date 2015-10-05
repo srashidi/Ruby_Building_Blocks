@@ -10,7 +10,7 @@ def stock_picker(arr)
 			end
 		end
 	end
-	puts setArray[diffArray.index(diffArray.max)]
+	puts setArray[diffArray.index(diffArray.max)].inspect
 end
 
 =begin
