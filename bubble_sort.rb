@@ -1,5 +1,5 @@
 def bubble_sort(arr)
-	until arr[0..-1] == arr.min(arr.length)
+	until arr == arr.min(arr.length)
 		arr.each_with_index do |value, index|
 			if (value <=> arr[index+1]) == 1
 				arr[index] = arr[index+1]
