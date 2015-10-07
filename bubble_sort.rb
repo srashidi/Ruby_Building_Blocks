@@ -1,8 +1,10 @@
 def bubble_sort(arr)
-	arr.each_with_index do |value, index|
-		if (value <=> arr[index+1]) == 1
-			arr[index] = arr[index+1]
-			arr[index+1] = value
+	until arr[0..-1] == arr.min(arr.length)
+		arr.each_with_index do |value, index|
+			if (value <=> arr[index+1]) == 1
+				arr[index] = arr[index+1]
+				arr[index+1] = value
+			end
 		end
 	end
 	puts arr.inspect
