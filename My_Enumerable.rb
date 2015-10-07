@@ -88,6 +88,30 @@ module Enumerable
 		result
 	end
 
+	def my_none?
+		result = false
+		if block_given?
+			self.my_each do |element|
+				if yield(element)
+					result = false
+					break
+				else
+					result = true
+				end
+			end
+		else
+			self.my_each do |element|
+				if element
+					result = false
+					break
+				else
+					result = true
+				end
+			end
+		end
+		result
+	end
+
 end
 
 [1,2,3,4].each {|value| puts value*2}
@@ -117,6 +141,16 @@ puts h4.to_s
 puts h5.to_s
 puts h6.to_s
 
+puts [1,2,3,4].none? {|value| value%2 == 0}
+puts [1,2,3,4].none? {|value| value > 0}
+puts [1,2,3,4].none? {|value| value < 0}
+h7 = {:Shaunty => "Hossein", :Austin => "Danger"}.none? {|key, value| value.include?("H")}
+h8 = {:Shaunty => "Hossein", :Austin => "Danger"}.none? {|key, value| value.include?("e")}
+h9 = {:Shaunty => "Hossein", :Austin => "Danger"}.none? {|key, value| value.include?("z")}
+puts h7.to_s
+puts h8.to_s
+puts h9.to_s
+
 puts ""
 
 [1,2,3,4].my_each {|value| puts value*2}
@@ -145,3 +179,13 @@ h6 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_any? {|key, value| value.in
 puts h4.to_s
 puts h5.to_s
 puts h6.to_s
+
+puts [1,2,3,4].my_none? {|value| value%2 == 0}
+puts [1,2,3,4].my_none? {|value| value > 0}
+puts [1,2,3,4].my_none? {|value| value < 0}
+h7 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_none? {|key, value| value.include?("H")}
+h8 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_none? {|key, value| value.include?("e")}
+h9 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_none? {|key, value| value.include?("z")}
+puts h7.to_s
+puts h8.to_s
+puts h9.to_s
