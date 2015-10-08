@@ -113,12 +113,50 @@ module Enumerable
 	end
 
 	def my_count(*param,&block)
-		if param.empty? && block_given? == false
-			result = self.size
-		elsif param[-1]
+		result = self.size
+		if param[-1]
+			if block_given?
+				puts "warning: given block not used"
+			end
 			result = self.my_select {|x| x == param[-1]}.size
 		elsif block_given? && param.empty?
 			result = self.my_select(&block).size
+		end
+		result
+	end
+
+	def my_map
+		result = self
+		if block_given?
+			result = Array.new
+			self.my_each {|element| result << yield(element)}
+		end
+		result
+	end
+
+	def my_inject(*params)
+		if self.class == Range
+			arr = self.to_a
+		else
+			arr = self
+		end
+		if params[0].is_a? Numeric
+			result = params[0]
+			i = 0
+		else
+			result = arr[0]
+			i = 1
+		end
+		if params[-1].is_a? Symbol
+			while i < arr.size do
+				result = result.send(params[-1],arr[i])
+				i += 1
+			end
+		elsif block_given?
+			while i < arr.size do
+				result = yield(result,arr[i])
+				i += 1
+			end
 		end
 		result
 	end
@@ -176,6 +214,19 @@ puts h11.to_s
 puts h12.to_s
 puts h13.to_s
 
+puts [1,2,3,4].map {|value| value*2}.inspect
+h14 = {:Shaunty => "Hossein", :Austin => "Danger"}.map {|key, value| value+"Blah"}
+puts h14.to_s
+
+puts (5..10).inject(:+)
+puts (5..10).inject {|sum, n| sum + n}
+puts (5..10).inject(1, :*)
+puts (5..10).inject(1) {|product, n| product * n}
+longest = %w{ cat sheep bear }.inject do |memo, word|
+   memo.length > word.length ? memo : word
+end
+puts longest
+
 puts ""
 
 #new method tests
@@ -228,3 +279,16 @@ puts h10.to_s
 puts h11.to_s
 puts h12.to_s
 puts h13.to_s
+
+puts [1,2,3,4].my_map {|value| value*2}.inspect
+h14 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_map {|key, value| value+"Blah"}
+puts h14.to_s
+
+puts (5..10).my_inject(:+)
+puts (5..10).my_inject {|sum, n| sum + n}
+puts (5..10).my_inject(1, :*)
+puts (5..10).my_inject(1) {|product, n| product * n}
+longest = %w{ cat sheep bear }.my_inject do |memo, word|
+   memo.length > word.length ? memo : word
+end
+puts longest
