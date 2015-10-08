@@ -112,14 +112,13 @@ module Enumerable
 		result
 	end
 
-	def my_count(*param)
+	def my_count(*param,&block)
 		if param.empty? && block_given? == false
 			result = self.size
 		elsif param[-1]
 			result = self.my_select {|x| x == param[-1]}.size
 		elsif block_given? && param.empty?
-			#result = self.my_select(yield).size
-			#issue with passing block into the method
+			result = self.my_select(&block).size
 		end
 		result
 	end
