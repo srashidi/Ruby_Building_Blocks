@@ -112,8 +112,21 @@ module Enumerable
 		result
 	end
 
+	def my_count(*param)
+		if param.empty? && block_given? == false
+			result = self.size
+		elsif param[-1]
+			result = self.my_select {|x| x == param[-1]}.size
+		elsif block_given? && param.empty?
+			#result = self.my_select(yield).size
+			#issue with passing block into the method
+		end
+		result
+	end
+
 end
 
+#control tests
 [1,2,3,4].each {|value| puts value*2}
 {:Shaunty => "Hossein", :Austin => "Danger"}.each {|key, value| puts value+"Blah"}
 
@@ -151,8 +164,22 @@ puts h7.to_s
 puts h8.to_s
 puts h9.to_s
 
+puts [1,2,3,2,2,4,2].count
+puts [1,2,3,2,2,4,2].count(2)
+puts [1,2,3,2,2,4,2].count {|value| value < 3}
+puts [1,2,3,2,2,4,2].count(2) {|value| value < 3}
+h10 = {:Shaunty => "Hossein", :Austin => "Danger"}.count
+h11 = {:Shaunty => "Hossein", :Austin => "Danger"}.count {|key, value| value.include?("H")}
+h12 = {:Shaunty => "Hossein", :Austin => "Danger"}.count {|key, value| value.include?("e")}
+h13 = {:Shaunty => "Hossein", :Austin => "Danger"}.count {|key, value| value.include?("z")}
+puts h10.to_s
+puts h11.to_s
+puts h12.to_s
+puts h13.to_s
+
 puts ""
 
+#new method tests
 [1,2,3,4].my_each {|value| puts value*2}
 {:Shaunty => "Hossein", :Austin => "Danger"}.my_each {|key, value| puts value+"Blah"}
 
@@ -189,3 +216,16 @@ h9 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_none? {|key, value| value.i
 puts h7.to_s
 puts h8.to_s
 puts h9.to_s
+
+puts [1,2,3,2,2,4,2].my_count
+puts [1,2,3,2,2,4,2].my_count(2)
+puts [1,2,3,2,2,4,2].my_count {|value| value < 3}
+puts [1,2,3,2,2,4,2].my_count(2) {|value| value < 3}
+h10 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_count
+h11 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_count {|key, value| value.include?("H")}
+h12 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_count {|key, value| value.include?("e")}
+h13 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_count {|key, value| value.include?("z")}
+puts h10.to_s
+puts h11.to_s
+puts h12.to_s
+puts h13.to_s
