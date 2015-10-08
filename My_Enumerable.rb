@@ -125,11 +125,16 @@ module Enumerable
 		result
 	end
 
-	def my_map
+	def my_map(proc)
 		result = self
-		if block_given?
+		if proc
 			result = Array.new
-			self.my_each {|element| result << yield(element)}
+			self.my_each {|element| result << proc.call(element)}
+			if block_given?
+				old_array = result
+				result = Array.new
+				old_array.my_each {|element| result << yield(element)}
+			end
 		end
 		result
 	end
@@ -214,6 +219,7 @@ puts h11.to_s
 puts h12.to_s
 puts h13.to_s
 
+puts "Control map:"
 puts [1,2,3,4].map {|value| value*2}.inspect
 h14 = {:Shaunty => "Hossein", :Austin => "Danger"}.map {|key, value| value+"Blah"}
 puts h14.to_s
@@ -280,9 +286,15 @@ puts h11.to_s
 puts h12.to_s
 puts h13.to_s
 
-puts [1,2,3,4].my_map {|value| value*2}.inspect
-h14 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_map {|key, value| value+"Blah"}
+puts "Test my_map:"
+proc1 = Proc.new {|value| value*2}
+proc2 = Proc.new {|key, value| value+"Blah"}
+puts [1,2,3,4].my_map(proc1).inspect
+h14 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_map(proc2)
 puts h14.to_s
+puts [1,2,3,4].my_map(proc1) {|value| value - 1}.inspect
+h15 = {:Shaunty => "Hossein", :Austin => "Danger"}.my_map(proc2) {|value| value.downcase}
+puts h15.to_s
 
 puts (5..10).my_inject(:+)
 puts (5..10).my_inject {|sum, n| sum + n}
@@ -292,3 +304,9 @@ longest = %w{ cat sheep bear }.my_inject do |memo, word|
    memo.length > word.length ? memo : word
 end
 puts longest
+
+def multiply_els(arr)
+	arr.my_inject(:*)
+end
+
+puts multiply_els([2,4,5])
