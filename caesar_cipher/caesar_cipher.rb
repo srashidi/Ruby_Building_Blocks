@@ -28,8 +28,6 @@ All I need to do is enter the method, specifying the array.
 		@i += 1
 	end
 
-	puts @str
+	@str
 
 end
-
-caesar_cipher("This is EXTREMELY difficult to the power of 8675309!",5)
