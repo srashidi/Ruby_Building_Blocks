@@ -65,7 +65,7 @@ module Enumerable
 	end
 
 	def my_any?
-		result = true
+		result = false
 		if block_given?
 			self.my_each do |element|
 				if yield(element)
@@ -89,7 +89,7 @@ module Enumerable
 	end
 
 	def my_none?
-		result = false
+		result = true
 		if block_given?
 			self.my_each do |element|
 				if yield(element)
@@ -168,6 +168,7 @@ module Enumerable
 
 end
 
+=begin
 #control tests
 [1,2,3,4].each {|value| puts value*2}
 {:Shaunty => "Hossein", :Austin => "Danger"}.each {|key, value| puts value+"Blah"}
@@ -310,3 +311,4 @@ def multiply_els(arr)
 end
 
 puts multiply_els([2,4,5])
+=end
